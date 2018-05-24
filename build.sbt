@@ -1,5 +1,7 @@
 import com.typesafe.config.ConfigFactory
 
+resolvers += Resolver.sonatypeRepo("releases")
+
 name := "play-design-exercise"
 
 lazy val commonSettings = Seq(
@@ -9,6 +11,7 @@ lazy val commonSettings = Seq(
 )
 
 lazy val scalikejdbcVersion = "3.2.2"
+lazy val catsVersion ="1.1.0"
 
 lazy val postgres = "org.postgresql" % "postgresql" % "42.2.2"
 
@@ -16,7 +19,8 @@ lazy val deps = Seq(
   guice,
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
   "com.typesafe" % "config" % "1.3.2",
-  "org.typelevel" %% "cats-core" % "1.1.0",
+  "org.typelevel" %% "cats-core" % catsVersion,
+  "org.typelevel" %% "cats-free" % catsVersion,
   postgres,
   "org.scalikejdbc" %% "scalikejdbc" % scalikejdbcVersion,
   "org.scalikejdbc" %% "scalikejdbc-config"  % scalikejdbcVersion,
@@ -41,7 +45,10 @@ lazy val byGuice =
 lazy val freeMonad =
   (project in file("free-monad"))
     .settings(commonSettings)
-    .settings(libraryDependencies ++= deps)
+    .settings(
+      libraryDependencies ++= deps,
+      addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
+    )
     .enablePlugins(PlayScala)
 
 lazy val conf = ConfigFactory.parseFile(new File("src/main/resources/application.conf"))
