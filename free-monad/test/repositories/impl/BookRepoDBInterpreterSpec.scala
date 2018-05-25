@@ -1,4 +1,4 @@
-package repositories.interpreters.impl
+package repositories.impl
 
 import org.scalatest.{Matchers, fixture}
 import repositories.BookRepo

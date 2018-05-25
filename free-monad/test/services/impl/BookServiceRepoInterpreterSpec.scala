@@ -1,10 +1,9 @@
-package services.interpreters.impl
+package services.impl
 
 import cats.{Id, ~>}
 import models.{Book, Shelf}
 import org.scalatest.{FunSpec, Matchers}
 import repositories.BookRepo
-import repositories.interpreters.BookRepoInterpreter
 import services.BookService
 
 class BookServiceRepoInterpreterSpec extends FunSpec with Matchers {
@@ -13,7 +12,7 @@ class BookServiceRepoInterpreterSpec extends FunSpec with Matchers {
   val book2 = Book(Book.Id(2), "book1", Shelf.Id(1))
   val book3 = Book(Book.Id(3), "book1", Shelf.Id(2))
 
-  trait MockInterpreter extends BookRepoInterpreter[Id] {
+  trait MockInterpreter extends BookRepo.Interpreter[Id] {
     override def get: BookRepo ~> Id = new (BookRepo ~> Id) {
       override def apply[A](fa: BookRepo[A]): A =
         fa match {

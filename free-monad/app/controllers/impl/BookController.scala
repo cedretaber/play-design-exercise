@@ -5,9 +5,9 @@ import controllers.entities.Book
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
 import play.api.mvc._
-import repositories.interpreters.impl.BookRepoDBInterpreter
+import repositories.impl.BookRepoDBInterpreter
 import services.BookService.BookServiceF
-import services.interpreters.impl.BookServiceRepoInterpreter
+import services.impl.BookServiceRepoInterpreter
 
 import scala.concurrent.Future
 

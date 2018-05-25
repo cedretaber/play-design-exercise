@@ -1,4 +1,4 @@
-package repositories.interpreters
+package repositories
 
 import models.AbstractId
 import scalikejdbc.ParameterBinderFactory

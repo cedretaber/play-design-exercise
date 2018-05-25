@@ -1,17 +1,16 @@
-package repositories.interpreters.impl
+package repositories.impl
 
 import cats.data.State
 import cats.~>
-import repositories.BookRepo
+import repositories.{BookRepo, CustomParameterBinder}
 import repositories.entities._
-import repositories.interpreters.{BookRepoInterpreter, CustomParameterBinder}
 import scalikejdbc._
 
-object BookRepoDBInterpreter extends BookRepoInterpreter[State[DBSession, ?]] with CustomParameterBinder {
+object BookRepoDBInterpreter extends BookRepo.Interpreter[State[DBSession, ?]] with CustomParameterBinder {
   type DBState[X] = State[DBSession, X]
 
   def get: BookRepo ~> DBState = new (BookRepo ~> DBState) {
-    override def apply[A](fa: BookRepo[A]): DBState[A] = {
+    override def apply[A](fa: BookRepo[A]): DBState[A] =
       for {
         s <- State.get
       } yield {
@@ -25,7 +24,6 @@ object BookRepoDBInterpreter extends BookRepoInterpreter[State[DBSession, ?]] wi
           case Delete(id) => delete(id)
         }
       }
-    }
   }
 
   val b = Books.syntax("b")

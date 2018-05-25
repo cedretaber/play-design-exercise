@@ -1,12 +1,11 @@
-package services.interpreters.impl
+package services.impl
 
 import cats.~>
 import models.Book
 import repositories.BookRepo
 import services.BookService
-import services.interpreters.BookServiceInterpreter
 
-object BookServiceRepoInterpreter extends BookServiceInterpreter[BookRepo.BookRepoF] {
+object BookServiceRepoInterpreter extends BookService.Interpreter[BookRepo.BookRepoF] {
   def get: (BookService ~> BookRepo.BookRepoF) = new (BookService ~> BookRepo.BookRepoF) {
     override def apply[A](fa: BookService[A]): BookRepo.BookRepoF[A] = {
       import BookService.{FindAll, FindById}

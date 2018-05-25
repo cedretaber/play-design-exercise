@@ -51,6 +51,15 @@ lazy val freeMonad =
     )
     .enablePlugins(PlayScala)
 
+lazy val taglessFinal =
+  (project in file("tagless-final"))
+    .settings(commonSettings)
+    .settings(
+      libraryDependencies ++= deps,
+      addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6")
+    )
+    .enablePlugins(PlayScala)
+
 lazy val conf = ConfigFactory.parseFile(new File("src/main/resources/application.conf"))
 lazy val testConf = ConfigFactory.parseFile(new File("src/main/resources/test.conf"))
 

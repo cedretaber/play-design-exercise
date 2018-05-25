@@ -2,7 +2,10 @@ package services
 
 import cats.free.Free
 import cats.free.Free.liftF
+import cats.~>
 import models.Book
+
+import scala.language.higherKinds
 
 sealed trait BookService[A]
 
@@ -15,4 +18,8 @@ object BookService {
 
   def findAll(): BookServiceF[Seq[Book]] = liftF(FindAll)
   def findById(id: Book.Id): BookServiceF[Option[Book]] = liftF(FindById(id))
+
+  trait Interpreter[M[_]] {
+    def get: BookService ~> M
+  }
 }

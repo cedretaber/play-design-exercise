@@ -2,7 +2,10 @@ package repositories
 
 import cats.free.Free
 import cats.free.Free.liftF
+import cats.~>
 import models.{Book, Shelf}
+
+import scala.language.higherKinds
 
 sealed trait BookRepo[A]
 
@@ -20,4 +23,8 @@ object BookRepo {
   def create(name: String, shelfId: Shelf.Id): BookRepoF[Unit] = liftF(Create(name, shelfId))
   def update(id: Book.Id, name: String, shelfId: Shelf.Id): BookRepoF[Unit] = liftF(Update(id, name, shelfId))
   def delete(id: Book.Id): BookRepoF[Unit] = liftF(Delete(id))
+
+  trait Interpreter[M[_]] {
+    def get: BookRepo ~> M
+  }
 }
