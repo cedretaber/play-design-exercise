@@ -8,8 +8,8 @@ sealed trait BookService[A]
 
 object BookService {
 
-  private[services] case object FindAll extends BookService[Seq[Book]]
-  private[services] case class FindById(id: Book.Id) extends BookService[Option[Book]]
+  case object FindAll extends BookService[Seq[Book]]
+  case class FindById(id: Book.Id) extends BookService[Option[Book]]
 
   type BookServiceF[A] = Free[BookService, A]
 

@@ -1,18 +1,19 @@
 package controllers
 
-import controllers.entities._
-import play.api.libs.json._
-import play.api.mvc.{AbstractController, Result}
+import play.api.mvc.{AbstractController, Action}
 import services.BookService
 
-trait BookController { self: AbstractController =>
+trait BookController[A] { self: AbstractController =>
 
-  def indexProgram(f: BookService.BookServiceF[Seq[models.Book]] => Seq[models.Book]): Result =
-    Ok(Json.toJson(f(BookService.findAll()).map(Book.fromModel)))
+  def runIndex(program: BookService.BookServiceF[Seq[models.Book]]): Action[A]
 
-  def showProgram(id: Long)(f: BookService.BookServiceF[Option[models.Book]] => Option[models.Book]): Result =
-    f(BookService.findById(models.Book.Id(id))) match {
-      case Some(book) => Ok(Json.toJson(Book fromModel book))
-      case None => NotFound
-    }
+  final def index: Action[A] = runIndex {
+    BookService.findAll()
+  }
+
+  def runShow(program: BookService.BookServiceF[Option[models.Book]]): Action[A]
+
+  final def show(id: Long): Action[A] = runShow {
+    BookService.findById(models.Book.Id(id))
+  }
 }
