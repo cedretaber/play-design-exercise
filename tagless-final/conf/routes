@@ -1,0 +1,3 @@
+
+GET /books/        controllers.impl.BookController.index
+GET /books/:bookId controllers.impl.BookController.show(bookId: Long)
