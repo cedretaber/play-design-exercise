@@ -1,13 +1,13 @@
 package daos.impl.daos
 
-import cats.Id
 import daos.impl.entities.Shelves
 import javax.inject.Singleton
 import models.Shelf
 import scalikejdbc._
+import services.ShelfRepository
 
 @Singleton
-class ShelfDao extends daos.ShelfDao[DBSession] with CustomParameterBinder {
+class ShelfDao extends ShelfRepository[DBSession] with CustomParameterBinder {
 
   val s = Shelves.syntax("s")
 

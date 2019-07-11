@@ -1,12 +1,11 @@
-package daos
+package services
 
 import com.google.inject.ImplementedBy
-import models.{Book, Shelf}
+import models.Book
+import models.Shelf
 
-import scala.language.higherKinds
-
-@ImplementedBy(classOf[impl.daos.BookDao])
-trait BookDao[C] {
+@ImplementedBy(classOf[daos.impl.daos.BookDao])
+trait BookRepository[C] {
   type Context = C
 
   def all()(implicit context: Context): Seq[Book]

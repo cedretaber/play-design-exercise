@@ -1,12 +1,10 @@
-package daos
+package services
 
 import com.google.inject.ImplementedBy
 import models.Shelf
 
-import scala.language.higherKinds
-
-@ImplementedBy(classOf[impl.daos.ShelfDao])
-trait ShelfDao[C] {
+@ImplementedBy(classOf[daos.impl.daos.ShelfDao])
+trait ShelfRepository[C] {
   type Context = C
 
   def all()(implicit context: Context): Seq[Shelf]

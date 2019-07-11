@@ -6,7 +6,7 @@ name := "play-design-exercise"
 
 lazy val commonSettings = Seq(
   version := "0.1",
-  scalaVersion := "2.12.6",
+  scalaVersion := "2.12.8",
   javaOptions in Test += "-Dconfig.file=conf/test.conf"
 )
 

@@ -4,9 +4,10 @@ import daos.impl.entities.Books
 import javax.inject.Singleton
 import models.{Book, Shelf}
 import scalikejdbc._
+import services.BookRepository
 
 @Singleton
-class BookDao extends daos.BookDao[DBSession] with CustomParameterBinder {
+class BookDao extends BookRepository[DBSession] with CustomParameterBinder {
 
   val b = Books.syntax("b")
 
