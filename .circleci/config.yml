@@ -35,7 +35,7 @@ jobs:
           command: sbt ";project freeMonad; test"
       - run:
           name: Test fot tagless final
-          command: sbg ";project taglessFinal; test"
+          command: sbt ";project taglessFinal; test"
       - save_cache:
           key: sbt-cache
           paths:
