@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker:
+      - image: openjdk:8
+      - image: circleci/postgres:9.6.14-alpine
+    environment:
+      SBT_VERSION: 1.2.8
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pdesignexer_test
+    steps:
+      - run:
+          name: Get sbt binary
+          command: |
+            apt update && apt install -y curl
+            curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb
+            dpkg -i sbt-$SBT_VERSION.deb
+            rm sbt-$SBT_VERSION.deb
+            apt-get update
+            apt-get clean && apt-get autoclean
+      - checkout
+      - restore_cache:
+          key: sbt-cache
+      - run:
+          name: Flyway migrate
+          command: sbt "test:flywayMigrate"
+      - run:
+          name: Test
+          command: sbt "; project byGuice; test; project freeMonad; test; project taglessFinal; test"
+      - save_cache:
+          key: sbt-cache
+          paths:
+            - "~/.ivy2/cache"
+            - "~/.sbt"
+            - "~/.m2"
+      - deploy:
+          command: |
+            mv target/universal/samplescala.zip $CIRCLE_ARTIFACTS/$ARTIFACT_BUILD
+            aws s3 cp $CIRCLE_ARTIFACTS/$ARTIFACT_BUILD s3://samplescala.blogs/builds/ --metadata {\"git_sha1\":\"$CIRCLE_SHA1\"}

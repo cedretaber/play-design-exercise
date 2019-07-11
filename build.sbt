@@ -32,7 +32,7 @@ lazy val root = (project in file("."))
   .enablePlugins(FlywayPlugin)
   .settings(
     version := "0.1",
-    scalaVersion := "2.12.6",
+    scalaVersion := "2.12.8",
     libraryDependencies += postgres
   )
 
